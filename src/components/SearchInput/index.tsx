@@ -1,8 +1,6 @@
-import React, { useState, useCallback } from 'react';
-
+import React, { useCallback, useState } from 'react';
 import { TextInputProps } from 'react-native';
-
-import { Container, TextInput, Icon } from './styles';
+import { Container, Icon, TextInput } from './styles';
 
 interface InputProps extends TextInputProps {
   name?: string;
@@ -31,7 +29,7 @@ const SearchInput: React.FC<InputProps> = ({ value = '', ...rest }) => {
       />
 
       <TextInput
-        placeholderTextColor="#B7B7CC"
+        placeholderTextColor="#B7B7B7"
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         value={value}
