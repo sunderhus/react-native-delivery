@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Image, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -54,12 +54,18 @@ const Dashboard: React.FC = () => {
   const navigation = useNavigation();
 
   async function handleNavigate(id: number): Promise<void> {
-    // Navigate do ProductDetails page
+    navigation.navigate('FoodDetails', {
+      id,
+    });
   }
 
   useEffect(() => {
     async function loadFoods(): Promise<void> {
-      const { data } = await api.get<Food[]>('foods');
+      const { data } = await api.get<Food[]>(
+        `foods?${searchValue && `name_like=${searchValue}`}${
+          selectedCategory ? `&category=${selectedCategory}` : ''
+        }`,
+      );
       setFoods(data);
     }
 
