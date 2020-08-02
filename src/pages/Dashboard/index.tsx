@@ -3,6 +3,7 @@ import { Image, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import { AxiosRequestConfig } from 'axios';
 import Logo from '../../assets/logo-header.png';
 import SearchInput from '../../components/SearchInput';
 
@@ -61,12 +62,15 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadFoods(): Promise<void> {
-      const { data } = await api.get<Food[]>(
-        `foods?${searchValue && `name_like=${searchValue}`}${
-          selectedCategory ? `&category=${selectedCategory}` : ''
-        }`,
-      );
-      setFoods(data);
+      const config: AxiosRequestConfig = {
+        params: {
+          name_like: searchValue,
+          category_like: selectedCategory,
+        },
+      };
+      await api
+        .get<Food[]>(`foods`, config)
+        .then(response => setFoods(response.data));
     }
 
     loadFoods();
@@ -74,8 +78,9 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadCategories(): Promise<void> {
-      const { data } = await api.get<Category[]>('categories');
-      setCategories(data);
+      await api
+        .get<Category[]>('categories')
+        .then(response => setCategories(response.data));
     }
 
     loadCategories();
